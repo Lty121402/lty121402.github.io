@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Glitchmas Prank Card 2.1</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&display=swap');
+:root{
+  --glow:#0ff;
+  --glitch1:#f0f;
+  --glitch2:#ff0;
+}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#000;
+  font-family:'Mountains of Christmas',cursive;
+  overflow:hidden;
+  cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-size='32'%3E🎅%3C/text%3E%3C/svg%3E"),auto;
+}
+body::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.15) 0 1px,transparent 1px 3px);
+  pointer-events:none;
+  animation:scan 2s linear infinite;
+}
+@keyframes scan{
+  0%{background-position-y:0}
+  100%{background-position-y:30px}
+}
+.card{
+  position:relative;
+  width:360px;
+  height:480px;
+  perspective:1200px;
+}
+.card-inner{
+  width:100%;
+  height:100%;
+  position:absolute;
+  transform-style:preserve-3d;
+  transition:transform .8s cubic-bezier(.68,-.55,.27,1.55);
+}
+.card:hover .card-inner{
+  transform:rotateY(180deg);
+}
+.face{
+  position:absolute;
+  width:100%;
+  height:100%;
+  backface-visibility:hidden;
+  border-radius:20px;
+  box-shadow:0 0 25px var(--glow),inset 0 0 25px rgba(255,255,255,.2);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:30px;
+  background:#111;
+  color:#fff;
+  overflow:hidden;
+}
+.front{
+  animation:glitch 1.2s infinite steps(1);
+}
+@keyframes glitch{
+  0%{text-shadow:-2px 0 var(--glitch1),2px 0 var(--glitch2);}
+  25%{text-shadow:2px 0 var(--glitch1),-2px 0 var(--glitch2);}
+  50%{text-shadow:-2px 0 var(--glitch2),2px 0 var(--glitch1);}
+  75%{text-shadow:2px 0 var(--glitch2),-2px 0 var(--glitch1);}
+  100%{text-shadow:none;}
+}
+.front h1{
+  font-size:42px;
+  margin-bottom:10px;
+}
+.front p{
+  font-size:22px;
+  opacity:.9;
+}
+.back{
+  transform:rotateY(180deg);
+  background:linear-gradient(135deg,#ff0844,#ffb199);
+  color:#000;
+}
+.back p{
+  font-size:24px;
+  margin:10px 0;
+}
+.back .rainbow{
+  background:linear-gradient(90deg,red,orange,yellow,green,blue,indigo,violet);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:shift 3s linear infinite;
+}
+@keyframes shift{
+  to{background-position:100vw;}
+}
+footer{
+  position:absolute;
+  bottom:15px;
+  color:#fff;
+  font-size:16px;
+  opacity:.7;
+}
+.snow{
+  position:absolute;
+  top:-50px;
+  color:#fff;
+  font-size:24px;
+  animation:fall 4s linear forwards;
+  pointer-events:none;
+  text-shadow:0 0 10px var(--glow);
+}
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(720deg);}
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="card-inner">
+    <div class="face front">
+      <h1>🎄 Glitchmas</h1>
+      <p>悬停开启整蛊宇宙</p>
+    </div>
+    <div class="face back">
+      <p class="rainbow">🎅 宇宙级惊喜</p>
+      <p>🎁 礼物①：无限循环《Jingle Bells》</p>
+      <p>🧦 礼物②：365天原味圣诞袜</p>
+      <p>🍪 礼物③：被鲁道夫啃过的饼干</p>
+      <p>🤪 祝你全年开心到闪屏！</p>
+    </div>
+  </div>
+</div>
+<footer>点击任意处召唤3D雪花+圣诞铃音</footer>
+
+<audio id="jingle" loop preload="auto">
+  <source src="C:\Users\Administrator\Downloads\christmas-music-451669.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+document.body.addEventListener('click',e=>{
+  const audio=document.getElementById('jingle');
+  audio.volume=0.3;
+  audio.play().catch(()=>{});
+
+  const s=document.createElement('div');
+  s.className='snow';
+  s.innerHTML=['❄️','❅','🎁','🧦'][Math.floor(Math.random()*4)];
+  s.style.left=e.clientX+'px';
+  s.style.animationDuration=(3+Math.random()*2)+'s';
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),5000);
+});
+</script>
+</body>
+</html>

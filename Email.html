@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>圣诞祝福邮局</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+            height:100vh;
+            background:linear-gradient(135deg,#8B0000 0%,#DC143C 50%,#B22222 100%);
+            font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+            overflow:hidden;
+            position:relative;
+        }
+        /* 动态雪花 */
+        .snow{
+            position:fixed;
+            top:-10px;
+            color:#fff;
+            user-select:none;
+            pointer-events:none;
+            animation:fall linear infinite;
+            font-size:1.2em;
+            text-shadow:0 0 5px rgba(255,255,255,0.8);
+            z-index:1000;
+        }
+        @keyframes fall{
+            to{transform:translateY(105vh) rotate(360deg);}
+        }
+        /* 主容器 */
+        .card{
+            position:absolute;
+            left:50%;top:50%;
+            transform:translate(-50%,-50%);
+            width:90%;max-width:420px;
+            background:rgba(255,255,255,0.08);
+            border-radius:20px;
+            padding:40px 30px;
+            text-align:center;
+            color:#fff;
+            box-shadow:0 8px 32px rgba(0,0,0,0.3);
+            backdrop-filter:blur(12px);
+            -webkit-backdrop-filter:blur(12px);
+            border:1px solid rgba(255,255,255,0.1);
+            z-index:10;
+        }
+        .card h1{
+            font-size:2.2em;
+            margin-bottom:15px;
+            background:linear-gradient(90deg,#FFD700,#FFA500);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+            text-shadow:0 2px 4px rgba(0,0,0,0.2);
+        }
+        .card p{
+            font-size:1.1em;
+            margin-bottom:30px;
+            opacity:0.85;
+        }
+        .btn{
+            background:linear-gradient(90deg,#FFD700,#FFA500);
+            border:none;
+            color:#8B0000;
+            padding:14px 32px;
+            font-size:1.1em;
+            border-radius:30px;
+            cursor:pointer;
+            transition:transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow:0 4px 15px rgba(255,215,0,0.4);
+            font-weight:600;
+            letter-spacing:0.5px;
+        }
+        .btn:hover{
+            transform:translateY(-3px);
+            box-shadow:0 6px 20px rgba(255,215,0,0.6);
+        }
+        /* 信件 */
+        .letter{
+            display:none;
+            margin-top:25px;
+            padding:25px;
+            background:rgba(255,255,255,0.1);
+            border-radius:15px;
+            text-align:left;
+            font-size:1em;
+            line-height:1.7;
+            animation:fadeIn 0.6s ease;
+            border:1px solid rgba(255,255,255,0.15);
+            backdrop-filter:blur(8px);
+            -webkit-backdrop-filter:blur(8px);
+        }
+        @keyframes fadeIn{
+            from{opacity:0;transform:translateY(20px);}
+            to{opacity:1;transform:translateY(0);}
+        }
+        .close:hover{
+            transform:scale(1.2);
+        }
+        /* 底部关闭按钮 */
+        .close-btn{
+            margin: 20px auto 0;   /* 上下 20px，左右 auto → 居中 */
+            display: block;        /* 让 margin:auto 生效 */
+            background:transparent;
+            border:2px solid #FFD700;
+            color:#FFD700;
+            padding:10px 24px;
+            font-size:1em;
+            border-radius:25px;
+            cursor:pointer;
+            transition:all 0.3s ease;
+        }
+
+        .close-btn:hover{
+            background:#FFD700;
+            color:#8B0000;
+        }
+        /* 圣诞树装饰 */
+        .tree{
+            position:absolute;
+            bottom:0;
+            left:50%;
+            transform:translateX(-50%);
+            width:220px;
+            height:280px;
+            background:url('data:image/svg+xml;utf8,\
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 280">\
+              <polygon points="110,20 70,100 150,100" fill="%231e7a34"/>\
+              <polygon points="110,60 60,140 160,140" fill="%23228B22"/>\
+              <polygon points="110,110 50,180 170,180" fill="%231e7a34"/>\
+              <rect x="95" y="180" width="30" height="40" fill="%238B4513"/>\
+              <circle cx="110" cy="50" r="5" fill="%23FFD700"/>\
+              <circle cx="90" cy="90" r="4" fill="%23FF69B4"/>\
+              <circle cx="130" cy="90" r="4" fill="%2300BFFF"/>\
+              <circle cx="110" cy="130" r="5" fill="%23FFD700"/>\
+              <circle cx="85" cy="160" r="4" fill="%23FF69B4"/>\
+              <circle cx="135" cy="160" r="4" fill="%2300BFFF"/>\
+              <polygon points="110,10 105,20 115,20" fill="%23FFD700"/>\
+            </svg>') no-repeat center;
+            background-size:contain;
+            z-index:5;
+        }
+        /* 圣诞袜 */
+        .stocking{
+            position:absolute;
+            top:50px;
+            right:50px;
+            width:60px;
+            height:80px;
+            background:url('data:image/svg+xml;utf8,\
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 80">\
+              <path d="M10,20 Q10,10 20,10 L40,10 Q50,10 50,20 L50,60 Q50,70 40,70 L20,70 Q10,70 10,60 Z" fill="%23DC143C"/>\
+              <rect x="10" y="10" width="40" height="8" fill="%23FFD700"/>\
+              <circle cx="30" cy="40" r="8" fill="%23FFD700"/>\
+              <circle cx="30" cy="60" r="6" fill="%23FFFFFF"/>\
+            </svg>') no-repeat center;
+            background-size:contain;
+            animation:swing 3s ease-in-out infinite;
+        }
+        @keyframes swing{
+            0%,100%{transform:rotate(-5deg);}
+            50%{transform:rotate(5deg);}
+        }
+        /* 圣诞帽 */
+        .santa-hat{
+            position:absolute;
+            top:20px;
+            left:50%;
+            transform:translateX(-50%);
+            width:80px;
+            height:60px;
+            background:url('data:image/svg+xml;utf8,\
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60">\
+              <path d="M10,40 Q10,20 30,20 L50,20 Q70,20 70,40 L70,50 L10,50 Z" fill="%23DC143C"/>\
+              <circle cx="70" cy="20" r="10" fill="%23FFFFFF"/>\
+              <rect x="10" y="40" width="60" height="10" fill="%23FFFFFF"/>\
+            </svg>') no-repeat center;
+            background-size:contain;
+            z-index:15;
+        }
+        /* 礼物盒 */
+        .gift{
+            position:absolute;
+            bottom:20px;
+            width:40px;
+            height:40px;
+            background:url('data:image/svg+xml;utf8,\
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">\
+              <rect x="5" y="15" width="30" height="20" fill="%23FFD700"/>\
+              <rect x="0" y="12" width="40" height="6" fill="%23DC143C"/>\
+              <rect x="17" y="0" width="6" height="40" fill="%23DC143C"/>\
+              <rect x="0" y="0" width="40" height="15" fill="%23FFA500"/>\
+            </svg>') no-repeat center;
+            background-size:contain;
+            animation:bounce 2s infinite;
+        }
+        .gift1{left:20%;animation-delay:0s;}
+        .gift2{right:20%;animation-delay:0.5s;}
+        .gift3{left:10%;bottom:100px;animation-delay:1s;}
+        @keyframes bounce{
+            0%,100%{transform:translateY(0);}
+            50%{transform:translateY(-10px);}
+        }
+        /* 星星 */
+        .star{
+            position:absolute;
+            color:#FFD700;
+            font-size:2em;
+            animation:twinkle 2s infinite;
+        }
+        @keyframes twinkle{
+            0%,100%{opacity:1;transform:scale(1);}
+            50%{opacity:0.5;transform:scale(1.2);}
+        }
+        .star1{top:10%;left:10%;animation-delay:0s;}
+        .star2{top:20%;right:15%;animation-delay:0.5s;}
+        .star3{bottom:30%;left:20%;animation-delay:1s;}
+        .star4{top:40%;left:5%;animation-delay:1.5s;}
+        .star5{bottom:20%;right:10%;animation-delay:2s;}
+        /* 响应式 */
+        @media (max-width:480px){
+            .card{padding:30px 20px}
+            .card h1{font-size:1.8em}
+            .stocking{top:30px;right:30px;width:50px;height:65px;}
+            .santa-hat{width:60px;height:45px;}
+        }
+    </style>
+</head>
+<body>
+<!-- 圣诞袜 -->
+<div class="stocking"></div>
+<!-- 圣诞帽 -->
+<div class="santa-hat"></div>
+<!-- 星星 -->
+<div class="star star1">⭐</div>
+<div class="star star2">✨</div>
+<div class="star star3">⭐</div>
+<div class="star star4">✨</div>
+<div class="star star5">⭐</div>
+<!-- 礼物盒 -->
+<div class="gift gift1"></div>
+<div class="gift gift2"></div>
+<div class="gift gift3"></div>
+<!-- 圣诞树 -->
+<div class="tree"></div>
+
+<!-- 主卡片 -->
+<div class="card">
+    <h1>🎄 圣诞祝福邮局</h1>
+    <p>叮叮当～点击按钮，领取一份只属于你的圣诞惊喜信件！</p>
+    <button class="btn" onclick="showLetter()">获取祝福</button>
+
+    <!-- 信件内容 -->
+    <div class="letter" id="letter">
+        <p id="letterText"></p>
+        <button class="close-btn" onclick="hideLetter()">关闭信件</button>
+    </div>
+</div>
+
+<script>
+    /* 动态雪花 */
+    function createSnow(){
+        const snow=document.createElement('div');
+        snow.className='snow';
+        snow.innerHTML='❄';
+        snow.style.left=Math.random()*100+'%';
+        snow.style.animationDuration=(Math.random()*2+3)+'s';
+        snow.style.opacity=Math.random()*0.7+0.3;
+        snow.style.fontSize=(Math.random()*0.8+0.8)+'em';
+        document.body.appendChild(snow);
+        setTimeout(()=>snow.remove(),6000);
+    }
+    setInterval(createSnow,150);
+
+    /* 祝福池 */
+    const wishes=[
+       `	To Tong：<br>
+       北极的星光已经抵达你的屏幕，雪橇铃铛在云端回响。<br>
+       愿你把过去一年的遗憾打包成雪球，用力抛向远方；<br>
+       愿你把所有未说出口的温暖，写在下一次呼吸里。<br>
+       圣诞快乐，明年见！`,
+       `嘿，Yutong：<br>
+       圣诞老人偷偷告诉我，你其实一直在发光——<br>
+       像雪夜里不灭的街灯，像橱窗里跳动的炉火。<br>
+       所以，请继续相信：所有迟到的好事，都在为你排练登场。<br>
+       `
+    ];
+
+    /* 显示信件 */
+    function showLetter(){
+        const idx=Math.floor(Math.random()*wishes.length);
+        document.getElementById('letterText').innerHTML=wishes[idx];
+        document.getElementById('letter').style.display='block';
+    }
+    function hideLetter(){
+        document.getElementById('letter').style.display='none';
+    }
+</script>
+</body>
+</html>
